@@ -1,0 +1,20 @@
+# Single-node Temporal dev server (in-memory persistence) + Web UI.
+# Поднимает Temporal frontend на localhost:7233 и Web UI на localhost:8233.
+# Образ temporalio/temporal — это CLI, режим `server start-dev` встраивает
+# persistence и UI в один процесс, отдельная БД не нужна.
+# Поднять:  docker compose up -d   |   Остановить:  docker compose down -v
+# Web UI:   http://localhost:8233
+services:
+  temporal:
+    image: temporalio/temporal:1.7.0
+    container_name: temporal
+    command:
+      - server
+      - start-dev
+      - --ip
+      - 0.0.0.0
+      - --ui-ip
+      - 0.0.0.0
+    ports:
+      - "7233:7233"   # gRPC frontend (client.Dial / worker)
+      - "8233:8233"   # Web UI
